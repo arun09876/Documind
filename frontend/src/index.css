@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme inline {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Newsreader", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-good: var(--good);
+  --color-bad: var(--bad);
+  --color-highlight: var(--highlight);
+}
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f6f3ee;
+  --panel: #efebe4;
+  --surface: #fffdf9;
+  --surface-2: #f4f0ea;
+  --line: #e4ddd2;
+  --ink: #1f1b16;
+  --ink-2: #4a433b;
+  --muted: #857b70;
+  --accent: #c2410c;
+  --accent-soft: #fbeee6;
+  --accent-ink: #9a3412;
+  --good: #3f7d4e;
+  --bad: #b42318;
+  --highlight: rgba(234, 179, 8, 0.38);
+  --shadow: 0 1px 2px rgba(60, 40, 20, 0.05), 0 1px 1px rgba(60, 40, 20, 0.03);
+  --shadow-pop: 0 18px 40px -14px rgba(60, 40, 20, 0.25);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #161412;
+  --panel: #1b1916;
+  --surface: #211e1b;
+  --surface-2: #2a2622;
+  --line: #36312b;
+  --ink: #f1ebe3;
+  --ink-2: #cfc6ba;
+  --muted: #968b7e;
+  --accent: #fb923c;
+  --accent-soft: rgba(251, 146, 60, 0.12);
+  --accent-ink: #fdba74;
+  --good: #7fbf8e;
+  --bad: #f28b82;
+  --highlight: rgba(250, 204, 21, 0.35);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-pop: 0 18px 44px -12px rgba(0, 0, 0, 0.7);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--accent) 25%, transparent);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-line bg-surface;
+    box-shadow: var(--shadow);
+  }
+  .input {
+    @apply w-full rounded-xl border border-line bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted focus:border-accent;
+  }
+}
+
+/* Assistant answers */
+.answer {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.72;
+}
+.answer p { margin: 0 0 0.8em; }
+.answer p:last-child { margin-bottom: 0; }
+.answer ul, .answer ol { margin: 0.4em 0 0.9em; padding-left: 1.3em; }
+.answer ul { list-style: disc; }
+.answer ol { list-style: decimal; }
+.answer li { margin: 0.25em 0; }
+.answer strong { font-weight: 650; }
+.answer h1, .answer h2, .answer h3 { font-family: var(--font-serif); font-weight: 600; margin: 1em 0 0.4em; }
+.answer code { font-family: var(--font-mono); font-size: 0.86em; background: var(--surface-2); padding: 1px 5px; border-radius: 5px; }
+.answer table { border-collapse: collapse; margin: 0.6em 0 1em; font-size: 14px; }
+.answer th, .answer td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; }
+.answer th { background: var(--surface-2); font-weight: 600; }
+
+/* Streaming cursor */
+.caret::after {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--accent);
+  border-radius: 1px;
+  animation: blink 1s steps(2) infinite;
+}
+@keyframes blink { to { opacity: 0; } }
+
+/* react-pdf: highlight the cited passage */
+.pdf-page mark {
+  background: var(--highlight);
+  color: transparent;
+  border-radius: 2px;
+}
+.react-pdf__Page__textContent { opacity: 1 !important; }
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes slide-in {
+  from { transform: translateX(24px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+.animate-fade-up { animation: fade-up 0.35s ease-out both; }
+.animate-slide-in { animation: slide-in 0.25s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

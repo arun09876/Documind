@@ -1,0 +1,14 @@
+Django==5.1.4
+djangorestframework==3.15.2
+djangorestframework-simplejwt==5.3.1
+django-cors-headers==4.6.0
+dj-database-url==2.3.0
+psycopg[binary]==3.2.3
+python-dotenv==1.0.1
+gunicorn==23.0.0
+whitenoise==6.8.2
+pypdf>=5.1
+numpy>=2.0
+fastembed>=0.4
+anthropic>=0.75.0
+fpdf2>=2.8
